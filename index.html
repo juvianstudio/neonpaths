@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeonPaths – Flow, Connect, and Illuminate!</title>
+  <meta name="description" content="NeonPaths is the ultimate vibrant and relaxing puzzle game. Connect the neon nodes, cover every tile, and master mind-bending logic puzzles across 6 unique game modes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --cyan:   #00f0ff;
+      --pink:   #ff2d78;
+      --green:  #39ff14;
+      --yellow: #ffe600;
+      --orange: #ff7700;
+      --blue:   #4d9fff;
+      --bg:     #070b12;
+      --bgc:    #101c30;
+      --txt:    #ddeeff;
+      --dim:    #6a90b8;
+      --bdr:    rgba(0,240,255,0.13);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Exo 2', sans-serif; background: var(--bg); color: var(--txt); overflow-x: hidden; }
+
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: linear-gradient(rgba(0,240,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,.035) 1px, transparent 1px);
+      background-size: 52px 52px; pointer-events: none; z-index: 0;
+    }
+
+    .amb { position: fixed; border-radius: 50%; filter: blur(130px); pointer-events: none; z-index: 0; animation: drift 20s ease-in-out infinite alternate; }
+    .a1 { width:550px; height:550px; background:rgba(0,240,255,.055); top:-120px; left:-80px; }
+    .a2 { width:420px; height:420px; background:rgba(255,45,120,.05); bottom:100px; right:-60px; animation-delay:-7s; }
+    .a3 { width:380px; height:380px; background:rgba(57,255,20,.04); top:50%; left:35%; animation-delay:-13s; }
+    @keyframes drift { from{transform:translate(0,0) scale(1);} to{transform:translate(35px,-35px) scale(1.08);} }
+
+    /* NAV */
+    nav {
+      position: sticky; top:0; z-index:200;
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 0 clamp(1.5rem,5vw,4rem); height: 68px;
+      background: rgba(7,11,18,.9); backdrop-filter: blur(22px);
+      border-bottom: 1px solid var(--bdr);
+    }
+    .nav-logo img { height: 38px; width: auto; display: block; filter: drop-shadow(0 0 8px rgba(0,240,255,.3)); transition: filter .2s; }
+    .nav-logo:hover img { filter: drop-shadow(0 0 14px rgba(0,240,255,.55)); }
+    .nav-links { display:flex; gap:2rem; list-style:none; }
+    .nav-links a { color:var(--dim); text-decoration:none; font-size:.8rem; font-weight:500; letter-spacing:.1em; text-transform:uppercase; transition:color .2s; }
+    .nav-links a:hover { color:var(--cyan); }
+    @media(max-width:560px){ .nav-links{gap:.8rem;} .nav-links a{font-size:.7rem;} }
+
+    /* HERO */
+    .hero {
+      position:relative; z-index:1;
+      min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      text-align:center; padding:5rem clamp(1.5rem,5vw,4rem) 4rem; overflow:hidden;
+    }
+    .hero-logo { width:clamp(240px,50vw,480px); margin-bottom:2.5rem; animation:fadeUp .9s ease both; filter:drop-shadow(0 0 45px rgba(0,240,255,.25)); }
+    .hero-badge { display:inline-block; font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--cyan); border:1px solid rgba(0,240,255,.32); border-radius:100px; padding:.35em 1.3em; margin-bottom:1.8rem; animation:fadeUp .9s .1s ease both; }
+    .hero-tagline { font-family:'Orbitron',monospace; font-size:clamp(1rem,3vw,1.55rem); font-weight:700; letter-spacing:.08em; color:var(--txt); animation:fadeUp .9s .2s ease both; margin-bottom:1.25rem; }
+    .hero-sub { max-width:580px; font-size:clamp(.92rem,2vw,1.05rem); font-weight:300; color:var(--dim); line-height:1.82; margin-bottom:2.5rem; animation:fadeUp .9s .3s ease both; }
+    .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; animation:fadeUp .9s .4s ease both; }
+    .btn-p { display:inline-block; font-family:'Orbitron',monospace; font-size:.8rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; color:var(--bg); background:var(--cyan); padding:.85em 2.2em; border-radius:9px; box-shadow:0 0 30px rgba(0,240,255,.45),0 0 70px rgba(0,240,255,.12); transition:transform .2s,box-shadow .2s; }
+    .btn-p:hover { transform:translateY(-3px); box-shadow:0 0 50px rgba(0,240,255,.65),0 0 100px rgba(0,240,255,.2); }
+    .btn-o { display:inline-block; font-family:'Orbitron',monospace; font-size:.8rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; color:var(--cyan); border:1px solid rgba(0,240,255,.38); padding:.85em 2.2em; border-radius:9px; transition:border-color .2s,background .2s; }
+    .btn-o:hover { border-color:var(--cyan); background:rgba(0,240,255,.07); }
+
+    .nd { position:absolute; border-radius:50%; pointer-events:none; animation:fnd 7s ease-in-out infinite alternate; }
+    .nd::after { content:''; position:absolute; inset:-5px; border-radius:50%; background:inherit; filter:blur(10px); opacity:.45; }
+    .nd1{width:20px;height:20px;background:var(--cyan);top:15%;left:6%;animation-delay:0s;}
+    .nd2{width:16px;height:16px;background:var(--pink);top:28%;right:8%;animation-delay:-2s;}
+    .nd3{width:24px;height:24px;background:var(--green);bottom:22%;left:10%;animation-delay:-4s;}
+    .nd4{width:18px;height:18px;background:var(--yellow);bottom:28%;right:7%;animation-delay:-1.5s;}
+    .nd5{width:14px;height:14px;background:var(--orange);top:60%;left:4%;animation-delay:-5s;}
+    @keyframes fnd { from{transform:translateY(0);} to{transform:translateY(-22px);} }
+
+    /* BANNER */
+    .banner-strip { position:relative; z-index:1; width:100%; max-height:400px; overflow:hidden; border-top:1px solid var(--bdr); border-bottom:1px solid var(--bdr); }
+    .banner-strip img { width:100%; height:400px; object-fit:cover; object-position:center; display:block; }
+
+    /* SECTION */
+    section { position:relative; z-index:1; }
+    .inner { max-width:1140px; margin:0 auto; padding:clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,3rem); }
+    .slabel { font-size:.7rem; letter-spacing:.24em; text-transform:uppercase; color:var(--cyan); margin-bottom:.7rem; }
+    .stitle { font-family:'Orbitron',monospace; font-size:clamp(1.5rem,4vw,2.4rem); font-weight:700; margin-bottom:1rem; }
+    .sdesc { color:var(--dim); font-size:1rem; font-weight:300; line-height:1.8; max-width:580px; margin-bottom:3rem; }
+
+    /* SHOWCASE */
+    .showcase { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; }
+    @media(max-width:768px){ .showcase{grid-template-columns:1fr;} .showcase.rev .sc-phone{order:-1;} }
+    .sc-phone-wrap { display:flex; justify-content:center; }
+    .sc-phone { border-radius:22px; overflow:hidden; border:1px solid var(--bdr); box-shadow:0 20px 80px rgba(0,240,255,.1); width:100%; max-width:260px; }
+    .sc-phone img { width:100%; display:block; }
+
+    /* MODES */
+    .modes-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:1.3rem; }
+    .mc { background:var(--bgc); border:1px solid var(--bdr); border-radius:14px; padding:1.75rem; transition:border-color .25s,transform .25s; position:relative; overflow:hidden; }
+    .mc::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--ac); opacity:0; transition:opacity .3s; }
+    .mc:hover { transform:translateY(-4px); border-color:var(--ac); }
+    .mc:hover::before { opacity:1; }
+    .mc-icon { font-size:1.8rem; margin-bottom:1rem; display:block; }
+    .mc-name { font-family:'Orbitron',monospace; font-size:.88rem; font-weight:700; letter-spacing:.1em; color:var(--ac); margin-bottom:.55rem; }
+    .mc-desc { font-size:.87rem; color:var(--dim); line-height:1.7; }
+
+    /* FEATURES */
+    .features-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1.1rem; }
+    .feat { background:var(--bgc); border:1px solid var(--bdr); border-radius:12px; padding:1.5rem; display:flex; gap:1rem; align-items:flex-start; }
+    .feat-icon { font-size:1.5rem; flex-shrink:0; margin-top:.1rem; }
+    .feat-text h4 { font-family:'Orbitron',monospace; font-size:.78rem; letter-spacing:.08em; color:var(--txt); margin-bottom:.4rem; }
+    .feat-text p { font-size:.83rem; color:var(--dim); line-height:1.65; }
+
+    /* REEL */
+    .reel { display:flex; gap:1.1rem; overflow-x:auto; padding:1rem 0 1.5rem; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:thin; scrollbar-color:rgba(0,240,255,.25) transparent; }
+    .reel::-webkit-scrollbar { height:4px; }
+    .reel::-webkit-scrollbar-thumb { background:rgba(0,240,255,.25); border-radius:4px; }
+    .reel-card { flex-shrink:0; width:195px; border-radius:18px; overflow:hidden; border:1px solid var(--bdr); scroll-snap-align:start; transition:transform .3s,border-color .3s,box-shadow .3s; cursor:zoom-in; }
+    .reel-card:hover { transform:translateY(-6px) scale(1.02); border-color:rgba(0,240,255,.38); box-shadow:0 12px 40px rgba(0,240,255,.12); }
+    .reel-card img { width:100%; display:block; }
+
+    /* LIGHTBOX */
+    #lb { display:none; position:fixed; inset:0; z-index:500; background:rgba(0,0,0,.88); align-items:center; justify-content:center; cursor:zoom-out; }
+    #lb.open { display:flex; animation:lbIn .2s ease; }
+    @keyframes lbIn { from{opacity:0;} to{opacity:1;} }
+    #lb img { max-width:90vw; max-height:90vh; object-fit:contain; border-radius:14px; border:1px solid var(--bdr); box-shadow:0 0 80px rgba(0,240,255,.18); }
+    #lb-close { position:fixed; top:1.5rem; right:1.5rem; font-size:2rem; color:var(--dim); cursor:pointer; transition:color .2s; line-height:1; }
+    #lb-close:hover { color:var(--cyan); }
+
+    /* DIVIDER */
+    .div { position:relative; z-index:1; height:1px; background:linear-gradient(90deg,transparent,var(--bdr),transparent); }
+
+    /* POLICY */
+    .policy-wrap { position:relative; z-index:1; max-width:820px; margin:0 auto; padding:clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,2rem); }
+    .ptag { display:inline-block; font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--pink); border:1px solid rgba(255,45,120,.32); border-radius:100px; padding:.3em 1em; margin-bottom:1rem; }
+    .ptag.g { color:var(--green); border-color:rgba(57,255,20,.32); }
+    .policy-title { font-family:'Orbitron',monospace; font-size:clamp(1.6rem,4vw,2.4rem); font-weight:700; margin-bottom:.75rem; }
+    .policy-date { font-size:.8rem; color:var(--dim); letter-spacing:.06em; margin-bottom:2.5rem; padding-bottom:2rem; border-bottom:1px solid var(--bdr); }
+    .pintro { background:rgba(0,240,255,.04); border-left:3px solid var(--cyan); border-radius:0 9px 9px 0; padding:1.25rem 1.5rem; font-size:.93rem; color:var(--dim); line-height:1.78; margin-bottom:2.5rem; }
+    .ps { margin-bottom:2.5rem; }
+    .ps h3 { font-family:'Orbitron',monospace; font-size:.88rem; font-weight:700; letter-spacing:.1em; color:var(--cyan); margin-bottom:1rem; display:flex; align-items:center; gap:.65rem; }
+    .ps h3::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan); flex-shrink:0; }
+    .ps p, .ps li { font-size:.9rem; color:var(--dim); line-height:1.82; margin-bottom:.6rem; }
+    .ps ul { list-style:none; padding-left:1.1rem; }
+    .ps ul li::before { content:'→ '; color:var(--cyan); opacity:.6; }
+    .ps a { color:var(--cyan); }
+
+    .del-box { background:linear-gradient(135deg,rgba(57,255,20,.05),rgba(0,240,255,.04)); border:1px solid rgba(57,255,20,.22); border-radius:14px; padding:2rem; margin:2rem 0; }
+    .del-box h3 { font-family:'Orbitron',monospace; font-size:.95rem; color:var(--green); margin-bottom:1rem; }
+    .del-box p, .del-box li { font-size:.9rem; color:var(--dim); line-height:1.8; margin-bottom:.6rem; }
+    .del-box ul { list-style:none; padding-left:1rem; margin:.75rem 0; }
+    .del-box ul li::before { content:'→ '; color:var(--green); opacity:.65; }
+    .email-btn { display:inline-flex; align-items:center; gap:.5rem; margin-top:1.25rem; padding:.75em 1.8em; background:rgba(57,255,20,.07); border:1px solid rgba(57,255,20,.38); border-radius:9px; color:var(--green); text-decoration:none; font-family:'Orbitron',monospace; font-size:.78rem; letter-spacing:.08em; font-weight:700; transition:background .2s,box-shadow .2s; }
+    .email-btn:hover { background:rgba(57,255,20,.13); box-shadow:0 0 22px rgba(57,255,20,.2); }
+
+    /* DATA TABLE */
+    .data-table { width:100%; border-collapse:collapse; font-size:.88rem; margin-top:.5rem; }
+    .data-table th { background:rgba(0,240,255,.08); color:var(--cyan); font-family:'Orbitron',monospace; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; padding:.75rem 1rem; text-align:left; border:1px solid rgba(0,240,255,.15); }
+    .data-table td { padding:.75rem 1rem; border:1px solid rgba(0,240,255,.1); color:var(--dim); vertical-align:middle; }
+    .data-table tr:nth-child(even) td { background:rgba(0,240,255,.03); }
+    .data-table strong { color:var(--txt); }
+
+    /* FOOTER */
+    footer { position:relative; z-index:1; border-top:1px solid var(--bdr); padding:2.5rem clamp(1.5rem,5vw,4rem); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1.5rem; }
+    .f-brand { font-family:'Orbitron',monospace; font-weight:900; font-size:.95rem; background:linear-gradient(90deg,var(--cyan),var(--pink)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .f-links { display:flex; gap:1.5rem; flex-wrap:wrap; }
+    .f-links a { font-size:.78rem; color:var(--dim); text-decoration:none; letter-spacing:.06em; transition:color .2s; }
+    .f-links a:hover { color:var(--cyan); }
+    .f-copy { font-size:.73rem; color:var(--dim); opacity:.5; letter-spacing:.05em; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(22px);} to{opacity:1;transform:translateY(0);} }
+    @media(max-width:768px){ .nd{display:none;} }
+  </style>
+</head>
+<body>
+
+  <div class="amb a1"></div>
+  <div class="amb a2"></div>
+  <div class="amb a3"></div>
+
+  <!-- LIGHTBOX -->
+  <div id="lb" onclick="closeLB()">
+    <span id="lb-close" onclick="closeLB()">✕</span>
+    <img id="lb-img" src="" alt="Screenshot" />
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#home" class="nav-logo"><img src="https://i.imgur.com/w0Hdmv9.png" alt="NeonPaths" /></a>
+    <ul class="nav-links">
+      <li><a href="#modes">Modes</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#privacy-policy">Privacy</a></li>
+      <li><a href="#delete-data">Delete Data</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="nd nd1"></div><div class="nd nd2"></div>
+    <div class="nd nd3"></div><div class="nd nd4"></div><div class="nd nd5"></div>
+
+    <img class="hero-logo" src="https://i.imgur.com/w0Hdmv9.png" alt="NeonPaths Logo" />
+    <span class="hero-badge">Neon · Paths · Puzzle · Logic</span>
+    <p class="hero-tagline">Path, Connect, and Illuminate!</p>
+    <p class="hero-sub">Connect matching neon nodes, cover every tile, and master mind-bending logic puzzles — wrapped in a beautiful glowing aesthetic with 6 unique game modes and infinite replayability.</p>
+    <div class="hero-btns">
+      <a href="#modes" class="btn-p">Explore Modes</a>
+      <a href="#privacy-policy" class="btn-o">Privacy Policy</a>
+    </div>
+  </section>
+
+  <!-- HOME SCREEN SHOWCASE -->
+  <section>
+    <div class="inner" style="padding-top:3rem;padding-bottom:3rem;">
+      <div class="showcase">
+        <div class="sc-phone-wrap">
+          <div class="sc-phone">
+            <img src="https://i.imgur.com/ZuBU23B.jpg" alt="NeonPaths Home Screen" />
+          </div>
+        </div>
+        <div>
+          <p class="slabel">Clean &amp; Intuitive</p>
+          <h2 class="stitle">Beautiful from the First Screen</h2>
+          <p class="sdesc" style="margin-bottom:0">A sleek dark home screen greets you with instant access to Classic play, Daily Puzzles, game Modes, and Settings — designed to get you into the neon as fast as possible.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME MODES SECTION -->
+  <div class="div"></div>
+  <section id="modes">
+    <div class="inner">
+      <p class="slabel">What's Inside</p>
+      <h2 class="stitle">6 Ways to Play</h2>
+      <p class="sdesc">From laid-back puzzle streams to white-knuckle speed runs — NeonPaths has a mode for every kind of player.</p>
+
+      <div class="modes-grid">
+        <div class="mc" style="--ac:#00f0ff"><span class="mc-icon">🧩</span><p class="mc-name">Classic</p><p class="mc-desc">The pure puzzle experience. Connect the colors and fill every part of the grid. Start simple on small grids and work your way up to massive, brain-teasing boards.</p></div>
+        <div class="mc" style="--ac:#39ff14"><span class="mc-icon">🧘</span><p class="mc-name">Zen</p><p class="mc-desc">An endless, relaxing puzzle stream set to a calming soundtrack. No pressure, no timers — just a continuous flow of logic puzzles to clear your mind.</p></div>
+        <div class="mc" style="--ac:#ffe600"><span class="mc-icon">⚡</span><p class="mc-name">Challenge</p><p class="mc-desc">A true test of speed and accuracy! Play against the clock on complex boards. Perfect for competitive puzzlers who want to push their limits.</p></div>
+        <div class="mc" style="--ac:#ff7700"><span class="mc-icon">🧱</span><p class="mc-name">Walls</p><p class="mc-desc">Navigate around dead zones. Wall blocks are placed on the grid, forcing you to think outside the box to route your neon colors around the obstacles.</p></div>
+        <div class="mc" style="--ac:#ff2d78"><span class="mc-icon">🫣</span><p class="mc-name">Hide &amp; Seek</p><p class="mc-desc">All nodes are initially gray. Tap to reveal a pair, connect them from memory, and deduce the board one path at a time. A true test of memory!</p></div>
+        <div class="mc" style="--ac:#4d9fff"><span class="mc-icon">📅</span><p class="mc-name">Daily Puzzle</p><p class="mc-desc">Join the global community! A brand-new puzzle is generated every day for everyone. Solve it, build your streak, and compete worldwide.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME MODES SCREEN SHOWCASE -->
+  <div class="div"></div>
+  <section>
+    <div class="inner" style="padding-top:3rem;padding-bottom:3rem;">
+      <div class="showcase rev">
+        <div>
+          <p class="slabel">Pick Your Style</p>
+          <h2 class="stitle">A Mode for Every Player</h2>
+          <p class="sdesc" style="margin-bottom:0">Classic, Zen, Challenge, Walls, Hide &amp; Seek and Daily Puzzle — each with its own soundtrack and difficulty curve, from tiny 5×5 grids up to sprawling 14×14 labyrinths.</p>
+        </div>
+        <div class="sc-phone-wrap">
+          <div class="sc-phone">
+            <img src="https://i.imgur.com/SAXAEUg.jpg" alt="Game Modes Screen" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEVEL COMPLETE SHOWCASE -->
+  <div class="div"></div>
+  <section>
+    <div class="inner" style="padding-top:3rem;padding-bottom:3rem;">
+      <div class="showcase">
+        <div class="sc-phone-wrap">
+          <div class="sc-phone">
+            <img src="https://i.imgur.com/SDd7QQp.jpg" alt="Level Complete Screen" />
+          </div>
+        </div>
+        <div>
+          <p class="slabel">Satisfying Rewards</p>
+          <h2 class="stitle">Earn Up to 3 Stars</h2>
+          <p class="sdesc" style="margin-bottom:0">Complete each level with efficiency to earn a perfect 3-star rating. Share your results, track your move count, and challenge friends to beat your score.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <div class="div"></div>
+  <section>
+    <div class="inner">
+      <p class="slabel">Why NeonPaths</p>
+      <h2 class="stitle" id="features">Key Features</h2>
+      <p class="sdesc">Everything you need for the perfect puzzle experience.</p>
+      <div class="features-grid">
+        <div class="feat"><span class="feat-icon">🌐</span><div class="feat-text"><h4>10 Languages</h4><p>English, Español, Deutsch, Français, Italiano, Türkçe, Português, 日本語, 한국어, 简体中文.</p></div></div>
+        <div class="feat"><span class="feat-icon">📐</span><div class="feat-text"><h4>Vast Grid Sizes</h4><p>Endless replayability with grids from tiny 5×5 up to massive 14×14 labyrinths.</p></div></div>
+        <div class="feat"><span class="feat-icon">💡</span><div class="feat-text"><h4>Tools &amp; Hints</h4><p>Stuck? Use the intelligent Hint button or Undo your last move to reroute your paths.</p></div></div>
+        <div class="feat"><span class="feat-icon">🎵</span><div class="feat-text"><h4>Immersive Soundtracks</h4><p>Mode-specific music — from tranquil Zen melodies to pulse-pounding Challenge beats.</p></div></div>
+        <div class="feat"><span class="feat-icon">📳</span><div class="feat-text"><h4>Haptic Feedback</h4><p>Satisfying vibrations every time you connect, complete, or make a move.</p></div></div>
+        <div class="feat"><span class="feat-icon">📤</span><div class="feat-text"><h4>Share Your Win</h4><p>Generate a gorgeous screenshot of your solved map and challenge your friends.</p></div></div>
+        <div class="feat"><span class="feat-icon">🔥</span><div class="feat-text"><h4>Daily Streak</h4><p>Come back every day, solve the global daily puzzle, and build your longest streak.</p></div></div>
+        <div class="feat"><span class="feat-icon">⭐</span><div class="feat-text"><h4>Star Ratings</h4><p>Earn up to 3 stars per level based on efficiency. Replay to master every puzzle.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOT GALLERY -->
+  <div class="div"></div>
+  <section id="gallery">
+    <div class="inner">
+      <p class="slabel">In Action</p>
+      <h2 class="stitle">Screenshots</h2>
+      <p class="sdesc">Tap any screenshot to view it full size.</p>
+      <div class="reel">
+        <div class="reel-card" onclick="openLB('https://i.imgur.com/jTUAogK.jpg')"><img src="https://i.imgur.com/jTUAogK.jpg" alt="Gameplay 2" loading="lazy"/></div>
+        <div class="reel-card" onclick="openLB('https://i.imgur.com/GDKT49e.jpg')"><img src="https://i.imgur.com/GDKT49e.jpg" alt="Gameplay 3" loading="lazy"/></div>
+        <div class="reel-card" onclick="openLB('https://i.imgur.com/4hEhOu9.jpg')"><img src="https://i.imgur.com/4hEhOu9.jpg" alt="Gameplay 1" loading="lazy"/></div>
+        <div class="reel-card" onclick="openLB('https://i.imgur.com/jxWy056.jpg')"><img src="https://i.imgur.com/jxWy056.jpg" alt="Gameplay 9" loading="lazy"/></div>
+        <div class="reel-card" onclick="openLB('https://i.imgur.com/vwnViTf.jpg')"><img src="https://i.imgur.com/vwnViTf.jpg" alt="Gameplay 8" loading="lazy"/></div>
+        <div class="reel-card" onclick="openLB('https://i.imgur.com/qsCzWdT.jpg')"><img src="https://i.imgur.com/qsCzWdT.jpg" alt="Gameplay 7" loading="lazy"/></div>
+        <div class="reel-card" onclick="openLB('https://i.imgur.com/S40a5LL.jpg')"><img src="https://i.imgur.com/S40a5LL.jpg" alt="Gameplay 6" loading="lazy"/></div>
+        <div class="reel-card" onclick="openLB('https://i.imgur.com/DY0KRn6.jpg')"><img src="https://i.imgur.com/DY0KRn6.jpg" alt="Gameplay 4" loading="lazy"/></div>
+        <div class="reel-card" onclick="openLB('https://i.imgur.com/vHuyYzq.jpg')"><img src="https://i.imgur.com/vHuyYzq.jpg" alt="Gameplay 5" loading="lazy"/></div>
+        <div class="reel-card" onclick="openLB('https://i.imgur.com/h4ptOzq.jpg')"><img src="https://i.imgur.com/h4ptOzq.jpg" alt="Gameplay 10" loading="lazy"/></div>
+        <div class="reel-card" onclick="openLB('https://i.imgur.com/Ncf9X1Y.jpg')"><img src="https://i.imgur.com/Ncf9X1Y.jpg" alt="Daily Puzzle" loading="lazy"/></div>
+        <div class="reel-card" onclick="openLB('https://i.imgur.com/SDd7QQp.jpg')"><img src="https://i.imgur.com/SDd7QQp.jpg" alt="Level Complete" loading="lazy"/></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="div"></div>
+
+  <!-- PRIVACY POLICY -->
+  <div class="policy-wrap" id="privacy-policy">
+    <h2 class="policy-title">Privacy Policy</h2>
+    <p style="color:var(--cyan);font-size:.85rem;margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--bdr);">Version: 1.0.3 | Last Reviewed: March 11, 2026</p>
+
+    <div class="ps">
+      <h3>Developer Information</h3>
+      <p>Studio: <strong>Juvian Studio</strong> · Email: <a href="/cdn-cgi/l/email-protection#acc6d9dac5cdc2dfd8d9c8c5c3eccbc1cdc5c082cfc3c1"><span class="__cf_email__" data-cfemail="e48e91928d858a979091808d8ba48389858d88ca878b89">[email&#160;protected]</span></a></p>
+    </div>
+
+    <div class="ps">
+      <h3>Data Safety Summary</h3>
+      <p style="margin-bottom:1rem;">In accordance with Google Play's Data Safety standards, we disclose the following collection and sharing practices:</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Data Type</th>
+            <th>Collection</th>
+            <th>Purpose</th>
+            <th>Encryption</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Device IDs</td>
+            <td><strong>Collected &amp; Shared</strong></td>
+            <td>Advertising (AdMob)</td>
+            <td>HTTPS/TLS</td>
+          </tr>
+          <tr>
+            <td>App Activity</td>
+            <td><strong>Collected</strong></td>
+            <td>Analytics &amp; Performance</td>
+            <td>HTTPS/TLS</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ps">
+      <h3>What We Collect</h3>
+      <ul>
+        <li><strong>Game Progress Data:</strong> Level completion, star ratings, move counts, and puzzle history — stored locally on your device and, if applicable, synced via Google Play Games Services.</li>
+        <li><strong>Daily Puzzle Streak Data:</strong> To track and display your daily puzzle participation streak.</li>
+        <li><strong>Analytics Data (Anonymous):</strong> Aggregated, non-identifiable usage statistics such as session length, crash reports, and feature usage — collected via Firebase Analytics.</li>
+        <li><strong>Advertising ID (Device ID):</strong> Used by AdMob for ad personalization and measurement, subject to your device settings.</li>
+        <li><strong>Device Information:</strong> OS version, device model, and language settings — used for compatibility and localization.</li>
+      </ul>
+      <p>NeonPaths does <strong>not</strong> require account creation. No name, email address, or payment information is directly collected by us.</p>
+    </div>
+
+    <div class="ps">
+      <h3>How We Use Your Data</h3>
+      <ul>
+        <li>To save and sync your game progress across sessions.</li>
+        <li>To operate the Daily Puzzle feature and maintain streaks.</li>
+        <li>To analyze and improve gameplay performance and stability.</li>
+        <li>To serve advertisements via AdMob and measure ad effectiveness.</li>
+        <li>To provide multilingual support tailored to your device's language settings.</li>
+        <li>To comply with applicable legal obligations.</li>
+      </ul>
+    </div>
+
+    <div class="ps">
+      <h3>Third-Party Services</h3>
+      <ul>
+        <li><strong>Google Play Games Services</strong> – cloud save and leaderboards.</li>
+        <li><strong>Google Firebase / Analytics</strong> – crash reporting and anonymous usage analytics.</li>
+        <li><strong>Google AdMob</strong> – displaying advertisements and collecting Device IDs for ad targeting.</li>
+      </ul>
+      <p>We do <strong>not</strong> sell your personal data to third parties.</p>
+    </div>
+
+    <div class="ps">
+      <h3>Children's Privacy</h3>
+      <p>NeonPaths does not knowingly collect or solicit personal information from children under the age of 13. If we learn that we have inadvertently collected information from a child under 13, we will take immediate steps to delete that data from our records.</p>
+    </div>
+
+    <div class="ps">
+      <h3>Rights &amp; Compliance</h3>
+      <p>Users in the EU (GDPR) and California (CCPA) may exercise their rights to access or delete data. Since we do not maintain a personal user database, these rights are primarily exercised through device Advertising ID resets and Google Account settings.</p>
+    </div>
+
+    <div class="ps">
+      <h3>Data Retention</h3>
+      <p>Local game data is retained on your device until you uninstall the App or clear its data. Anonymized analytics data on third-party servers is kept no longer than 24 months.</p>
+    </div>
+
+    <div class="ps">
+      <h3>Changes to This Policy</h3>
+      <p>We may update this Privacy Policy from time to time. We will notify you of material changes by updating the version number and review date above.</p>
+    </div>
+
+    <div class="ps">
+      <h3>Contact Us</h3>
+      <p>📧 <a href="/cdn-cgi/l/email-protection#563c23203f3738252223323f3916313b373f3a7835393b"><span class="__cf_email__" data-cfemail="d2b8a7a4bbb3bca1a6a7b6bbbd92b5bfb3bbbefcb1bdbf">[email&#160;protected]</span></a> &nbsp;·&nbsp; <strong>Juvian Studio</strong></p>
+    </div>
+  </div>
+
+  <div class="div"></div>
+
+  <!-- DELETE DATA -->
+  <div class="policy-wrap" id="delete-data">
+    <h2 class="policy-title">Delete Your Data</h2>
+    <p style="color:var(--dim);font-size:.8rem;margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--bdr);">Juvian Studio · NeonPaths · Android</p>
+
+    <div class="del-box">
+      <h3>Request Account Data Removal</h3>
+      <p>Because NeonPaths does not store user data on private servers, 'deletion' refers to the removal of local device data and the dissociation of your Advertising ID from third-party services like AdMob.</p>
+      <p>To request a manual reset or instructions on how to dissociate your identifiers from third-party services, please email us from your registered account.</p>
+      <a href="/cdn-cgi/l/email-protection#0e647b78676f607d7a7b6a67614e69636f6762206d6163317d7b6c646b6d7a334a6f7a6f2b3c3e4a6b626b7a6761602b3c3e5c6b7f7b6b7d7a2b3c3e2b4b3c2b363e2b373d2b3c3e406b61605e6f7a667d" class="email-btn">✉ <span class="__cf_email__" data-cfemail="076d72716e6669747372636e6847606a666e6b2964686a">[email&#160;protected]</span></a>
+    </div>
+
+    <div class="ps">
+      <h3>Local Data Deletion</h3>
+      <p>You can delete all local game progress and cached data instantly by navigating to your device's <strong>Settings → Apps → NeonPaths → Storage → Clear Data</strong>.</p>
+      <p>Uninstalling the App will also permanently remove all locally stored data from your device.</p>
+    </div>
+
+    <div class="ps">
+      <h3>Advertising ID Reset</h3>
+      <p>To dissociate your device from AdMob ad targeting, you can reset your Advertising ID at any time:</p>
+      <ul>
+        <li>Go to <strong>Settings → Google → Ads → Reset Advertising ID</strong> (Android).</li>
+        <li>You can also opt out of personalized ads entirely from the same menu.</li>
+      </ul>
+    </div>
+
+    <div class="ps">
+      <h3>What Gets Removed</h3>
+      <ul>
+        <li>All locally stored game progress, level completions, and star ratings.</li>
+        <li>Daily puzzle streak records on your device.</li>
+        <li>Your Advertising ID association with AdMob (via ID reset).</li>
+        <li>Any Google Play Games cloud save data (managed via your Google Account).</li>
+      </ul>
+    </div>
+
+    <div class="ps">
+      <h3>Processing Timeline</h3>
+      <p>We aim to acknowledge email requests within <strong>5 business days</strong> and complete any server-side dissociation within <strong>30 days</strong>. Local data deletion via device settings is immediate.</p>
