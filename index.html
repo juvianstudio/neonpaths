@@ -360,6 +360,8 @@
         <tbody>
           <tr><td>Game Progress &amp; Settings</td><td>Stored locally on device only<br/><small style="color:var(--dim)">(shared_preferences)</small></td><td>Save game state</td><td>Device storage</td></tr>
           <tr><td>Device / Advertising ID</td><td>Google AdMob</td><td>Ad serving &amp; personalization</td><td>HTTPS/TLS</td></tr>
+          <tr><td>Diagnostic Data</td><td>Google AdMob</td><td>Ad stability &amp; performance</td><td>HTTPS/TLS</td></tr>
+          <tr><td>Ad Interactions (taps, views)</td><td>Google AdMob</td><td>Ad performance measurement</td><td>HTTPS/TLS</td></tr>
         </tbody>
       </table>
     </div>
@@ -385,7 +387,12 @@
 
     <div class="ps">
       <h3>Third-Party Services — Google AdMob</h3>
-      <p>NeonPaths displays ads served by <strong>Google AdMob</strong>. AdMob operates independently of the App and may collect your device's Advertising ID to serve personalized ads. This data is sent directly from your device to Google's ad servers — Juvian Studio does not receive, process, or have access to this data.</p>
+      <p>NeonPaths displays ads served by <strong>Google AdMob</strong>. AdMob operates independently of the App and connects directly to Google's ad servers — Juvian Studio does not receive, process, or have access to any of this data. AdMob may collect the following automatically:</p>
+      <ul>
+        <li><strong>Advertising ID:</strong> Your device's Advertising ID is used to serve and personalize ads.</li>
+        <li><strong>Diagnostic Information:</strong> Google AdMob may collect crash logs, app launch time, and performance data to ensure ad stability.</li>
+        <li><strong>User Interactions:</strong> Information regarding how you interact with ads (taps, views) is collected by Google to measure ad performance.</li>
+      </ul>
       <p>For details on how Google handles this data, please review the <a href="https://policies.google.com/privacy" target="_blank">Google Privacy Policy ↗</a>.</p>
       <p>There are no other third-party SDKs, analytics tools, or tracking libraries in NeonPaths.</p>
     </div>
@@ -438,7 +445,7 @@
       <h3>Request Account Data Removal</h3>
       <p>Because NeonPaths does not store user data on private servers, 'deletion' refers to the removal of local device data and the dissociation of your Advertising ID from third-party services like AdMob.</p>
       <p>To request a manual reset or instructions on how to dissociate your identifiers from third-party services, please email us from your registered account.</p>
-      <a href="mailto:juvianstudio@gmail.com?subject=Data%20Deletion%20Request%20%E2%80%93%20NeonPaths" class="email-btn">✉ juvianstudio@gmail.com</a>
+      <a href="mailto:juvianstudio@gmail.com" class="email-btn">juvianstudio@gmail.com</a>
     </div>
 
     <div class="ps">
@@ -454,6 +461,7 @@
         <li>Go to <strong>Settings → Google → Ads → Reset Advertising ID</strong> (Android).</li>
         <li>You can also opt out of personalized ads entirely from the same menu by selecting <strong>Opt out of Ads Personalization</strong>.</li>
       </ul>
+      <p>Users may also request the deletion of any administrative records associated with their Advertising ID (held by our service providers) by contacting us at <a href="mailto:juvianstudio@gmail.com">juvianstudio@gmail.com</a>. We will forward the request to the relevant provider and confirm once actioned.</p>
     </div>
 
     <div class="ps">
@@ -478,29 +486,4 @@
 
   <!-- FOOTER -->
   <footer>
-    <span class="f-brand"><img src="https://i.imgur.com/w0Hdmv9.png" alt="NeonPaths" style="height:32px;width:auto;filter:drop-shadow(0 0 6px rgba(0,240,255,.25));" /></span>
-    <div class="f-links">
-      <a href="#modes">Game Modes</a>
-      <a href="#features">Features</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#privacy-policy">Privacy Policy</a>
-      <a href="#delete-data">Delete Data</a>
-      <a href="mailto:juvianstudio@gmail.com">Contact</a>
-    </div>
-    <span class="f-copy">© 2026 Juvian Studio. All rights reserved.</span>
-  </footer>
-
-  <script>
-    function openLB(src) {
-      document.getElementById('lb-img').src = src;
-      document.getElementById('lb').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeLB() {
-      document.getElementById('lb').classList.remove('open');
-      document.body.style.overflow = '';
-    }
-    document.addEventListener('keydown', e => { if(e.key==='Escape') closeLB(); });
-  </script>
-</body>
-</html>
+    <span class="f-brand"><img src="https://i.imgur.com/w0Hdmv9.png" alt="NeonPaths" style="height:32px;width:a
