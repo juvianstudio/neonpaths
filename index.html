@@ -340,97 +340,90 @@
     <h2 class="policy-title">Privacy Policy</h2>
     <p style="color:var(--cyan);font-size:.85rem;margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--bdr);">Version: 1.0.3 | Last Reviewed: March 11, 2026</p>
 
+    <div class="pintro">
+      This Privacy Policy describes the data practices of the <strong>NeonPaths</strong> mobile application, developed by <strong>Juvian Studio</strong>. NeonPaths is a standalone puzzle game — we do not operate any servers, maintain any user database, or collect any personal information from our users. All game data is stored locally on your device. The only third-party service integrated into the App is <strong>Google AdMob</strong> for displaying ads, which operates independently under Google's own privacy policy.
+    </div>
+
     <div class="ps">
       <h3>Developer Information</h3>
-      <p>Studio: <strong>Juvian Studio</strong> · Email: <a href="mailto:juvianstudio@gmail.com" style="color:var(--cyan)">juvianstudio@gmail.com</a></p>
+      <p>Studio: <strong>Juvian Studio</strong> &nbsp;·&nbsp; Email: <a href="mailto:juvianstudio@gmail.com">juvianstudio@gmail.com</a></p>
+      <p>App Name: <strong>NeonPaths</strong> &nbsp;·&nbsp; Platform: <strong>Android (Google Play)</strong></p>
     </div>
 
     <div class="ps">
       <h3>Data Safety Summary</h3>
-      <p style="margin-bottom:1rem;">In accordance with Google Play's Data Safety standards, we disclose the following collection and sharing practices:</p>
+      <p style="margin-bottom:1rem;">In accordance with Google Play's Data Safety standards, here is a complete summary of all data handling in NeonPaths:</p>
       <table class="data-table">
         <thead>
-          <tr>
-            <th>Data Type</th>
-            <th>Collection</th>
-            <th>Purpose</th>
-            <th>Encryption</th>
-          </tr>
+          <tr><th>Data Type</th><th>Collected By</th><th>Purpose</th><th>Encryption</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Device IDs</td>
-            <td><strong>Collected &amp; Shared</strong></td>
-            <td>Advertising (AdMob)</td>
-            <td>HTTPS/TLS</td>
-          </tr>
-          <tr>
-            <td>App Activity</td>
-            <td><strong>Collected</strong></td>
-            <td>Analytics &amp; Performance</td>
-            <td>HTTPS/TLS</td>
-          </tr>
+          <tr><td>Game Progress &amp; Settings</td><td>Stored locally on device only<br/><small style="color:var(--dim)">(shared_preferences)</small></td><td>Save game state</td><td>Device storage</td></tr>
+          <tr><td>Device / Advertising ID</td><td>Google AdMob</td><td>Ad serving &amp; personalization</td><td>HTTPS/TLS</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="ps">
-      <h3>What We Collect</h3>
+      <h3>What Juvian Studio Does NOT Do</h3>
       <ul>
-        <li><strong>Game Progress Data:</strong> Level completion, star ratings, move counts, and puzzle history — stored locally on your device and, if applicable, synced via Google Play Games Services.</li>
-        <li><strong>Daily Puzzle Streak Data:</strong> To track and display your daily puzzle participation streak.</li>
-        <li><strong>Analytics Data (Anonymous):</strong> Aggregated, non-identifiable usage statistics such as session length, crash reports, and feature usage — collected via Firebase Analytics.</li>
-        <li><strong>Advertising ID (Device ID):</strong> Used by AdMob for ad personalization and measurement, subject to your device settings.</li>
-        <li><strong>Device Information:</strong> OS version, device model, and language settings — used for compatibility and localization.</li>
-      </ul>
-      <p>NeonPaths does <strong>not</strong> require account creation. No name, email address, or payment information is directly collected by us.</p>
-    </div>
-
-    <div class="ps">
-      <h3>How We Use Your Data</h3>
-      <ul>
-        <li>To save and sync your game progress across sessions.</li>
-        <li>To operate the Daily Puzzle feature and maintain streaks.</li>
-        <li>To analyze and improve gameplay performance and stability.</li>
-        <li>To serve advertisements via AdMob and measure ad effectiveness.</li>
-        <li>To provide multilingual support tailored to your device's language settings.</li>
-        <li>To comply with applicable legal obligations.</li>
+        <li>We do <strong>not</strong> operate any servers or databases.</li>
+        <li>We do <strong>not</strong> collect, store, or transmit any personal information.</li>
+        <li>We do <strong>not</strong> use Firebase, analytics SDKs, or any crash reporting tools.</li>
+        <li>We do <strong>not</strong> require account creation, login, or registration of any kind.</li>
+        <li>We do <strong>not</strong> collect your name, email address, location, or any identifiable information.</li>
+        <li>We do <strong>not</strong> sell, share, or trade any user data — because we have none to share.</li>
       </ul>
     </div>
 
     <div class="ps">
-      <h3>Third-Party Services</h3>
+      <h3>How Game Data is Stored</h3>
+      <p>All game data — including level completions, star ratings, game settings, and daily puzzle streaks — is stored <strong>exclusively on your local device</strong> using the <code>shared_preferences</code> package. This data is never transmitted to any server, never shared with any third party, and is only accessible by the App on your device.</p>
+      <p>Juvian Studio has <strong>no access</strong> to this data at any time.</p>
+      <p>You can delete this data at any time by going to <strong>Settings → Apps → NeonPaths → Storage → Clear Data</strong>, or by uninstalling the App.</p>
+    </div>
+
+    <div class="ps">
+      <h3>Third-Party Services — Google AdMob</h3>
+      <p>NeonPaths displays ads served by <strong>Google AdMob</strong>. AdMob operates independently of the App and may collect your device's Advertising ID to serve personalized ads. This data is sent directly from your device to Google's ad servers — Juvian Studio does not receive, process, or have access to this data.</p>
+      <p>For details on how Google handles this data, please review the <a href="https://policies.google.com/privacy" target="_blank">Google Privacy Policy ↗</a>.</p>
+      <p>There are no other third-party SDKs, analytics tools, or tracking libraries in NeonPaths.</p>
+    </div>
+
+    <div class="ps">
+      <h3>Advertising &amp; Opt-Out</h3>
+      <p>You can control ad personalization at any time directly on your Android device:</p>
       <ul>
-        <li><strong>Google Play Games Services</strong> – cloud save and leaderboards.</li>
-        <li><strong>Google Firebase / Analytics</strong> – crash reporting and anonymous usage analytics.</li>
-        <li><strong>Google AdMob</strong> – displaying advertisements and collecting Device IDs for ad targeting.</li>
+        <li><strong>Opt out of personalized ads:</strong> <strong>Settings → Google → Ads → Opt out of Ads Personalization</strong></li>
+        <li><strong>Reset your Advertising ID:</strong> <strong>Settings → Google → Ads → Reset Advertising ID</strong></li>
       </ul>
-      <p>We do <strong>not</strong> sell your personal data to third parties.</p>
+      <p>You may still see non-personalized (contextual) ads after opting out. There is currently no in-app purchase or option to remove ads.</p>
     </div>
 
     <div class="ps">
       <h3>Children's Privacy</h3>
-      <p>NeonPaths does not knowingly collect or solicit personal information from children under the age of 13. If we learn that we have inadvertently collected information from a child under 13, we will take immediate steps to delete that data from our records.</p>
+      <p>NeonPaths is not directed at children under the age of 13. Since we do not collect any user data directly, there is no risk of inadvertent personal data collection on our part. However, Google AdMob is subject to its own child-directed content policies. If you are a parent or guardian with concerns, please contact us at <a href="mailto:juvianstudio@gmail.com">juvianstudio@gmail.com</a>.</p>
     </div>
 
     <div class="ps">
-      <h3>Rights &amp; Compliance</h3>
-      <p>Users in the EU (GDPR) and California (CCPA) may exercise their rights to access or delete data. Since we do not maintain a personal user database, these rights are primarily exercised through device Advertising ID resets and Google Account settings.</p>
-    </div>
-
-    <div class="ps">
-      <h3>Data Retention</h3>
-      <p>Local game data is retained on your device until you uninstall the App or clear its data. Anonymized analytics data on third-party servers is kept no longer than 24 months.</p>
+      <h3>Your Rights (GDPR / CCPA)</h3>
+      <p>Since Juvian Studio does not collect or hold any personal data, there is no personal data on our end to access, correct, or delete. For data handled by Google AdMob, your rights are exercised directly with Google:</p>
+      <ul>
+        <li>Reset or opt out of your <strong>Advertising ID</strong> via Android device settings.</li>
+        <li>Manage your <strong>Google Account data</strong> at <a href="https://myaccount.google.com" target="_blank">myaccount.google.com ↗</a>.</li>
+        <li>Contact us at <a href="mailto:juvianstudio@gmail.com">juvianstudio@gmail.com</a> with any questions and we will direct you accordingly.</li>
+      </ul>
     </div>
 
     <div class="ps">
       <h3>Changes to This Policy</h3>
-      <p>We may update this Privacy Policy from time to time. We will notify you of material changes by updating the version number and review date above.</p>
+      <p>We may update this Privacy Policy from time to time. We will notify you of material changes by updating the version number and review date at the top of this page. Continued use of the App after changes are posted constitutes your acceptance of the revised policy.</p>
     </div>
 
     <div class="ps">
       <h3>Contact Us</h3>
-    <p>📧 <a href="mailto:juvianstudio@gmail.com" style="color:var(--cyan)">juvianstudio@gmail.com</a> &nbsp;·&nbsp; <strong>Juvian Studio</strong></p>
+      <p>📧 <a href="mailto:juvianstudio@gmail.com">juvianstudio@gmail.com</a> &nbsp;·&nbsp; <strong>Juvian Studio</strong></p>
+      <p style="font-size:.82rem;color:var(--dim);margin-top:.5rem;">This privacy policy is hosted at a permanent, publicly accessible URL and is also linked within the NeonPaths application.</p>
     </div>
   </div>
 
@@ -445,7 +438,7 @@
       <h3>Request Account Data Removal</h3>
       <p>Because NeonPaths does not store user data on private servers, 'deletion' refers to the removal of local device data and the dissociation of your Advertising ID from third-party services like AdMob.</p>
       <p>To request a manual reset or instructions on how to dissociate your identifiers from third-party services, please email us from your registered account.</p>
-      <a href="mailto:juvianstudio@gmail.com" class="email-btn">✉ juvianstudio@gmail.com</a>
+      <a href="mailto:juvianstudio@gmail.com?subject=Data%20Deletion%20Request%20%E2%80%93%20NeonPaths" class="email-btn">✉ juvianstudio@gmail.com</a>
     </div>
 
     <div class="ps">
@@ -459,7 +452,7 @@
       <p>To dissociate your device from AdMob ad targeting, you can reset your Advertising ID at any time:</p>
       <ul>
         <li>Go to <strong>Settings → Google → Ads → Reset Advertising ID</strong> (Android).</li>
-        <li>You can also opt out of personalized ads entirely from the same menu.</li>
+        <li>You can also opt out of personalized ads entirely from the same menu by selecting <strong>Opt out of Ads Personalization</strong>.</li>
       </ul>
     </div>
 
@@ -469,10 +462,45 @@
         <li>All locally stored game progress, level completions, and star ratings.</li>
         <li>Daily puzzle streak records on your device.</li>
         <li>Your Advertising ID association with AdMob (via ID reset).</li>
-        <li>Any Google Play Games cloud save data (managed via your Google Account).</li>
       </ul>
     </div>
 
     <div class="ps">
       <h3>Processing Timeline</h3>
-      <p>We aim to acknowledge email requests within <strong>5 business days</strong> and complete any server-side dissociation within <strong>30 days</strong>. Local data deletion via device settings is immediate.</p>
+      <p>Local data deletion via device settings is <strong>immediate</strong>. For any email requests regarding Advertising ID dissociation, we aim to respond within <strong>5 business days</strong>.</p>
+    </div>
+
+    <div class="ps">
+      <h3>Questions?</h3>
+      <p>📧 <a href="mailto:juvianstudio@gmail.com" style="color:var(--green);">juvianstudio@gmail.com</a> &nbsp;·&nbsp; <strong>Juvian Studio</strong></p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="f-brand"><img src="https://i.imgur.com/w0Hdmv9.png" alt="NeonPaths" style="height:32px;width:auto;filter:drop-shadow(0 0 6px rgba(0,240,255,.25));" /></span>
+    <div class="f-links">
+      <a href="#modes">Game Modes</a>
+      <a href="#features">Features</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#privacy-policy">Privacy Policy</a>
+      <a href="#delete-data">Delete Data</a>
+      <a href="mailto:juvianstudio@gmail.com">Contact</a>
+    </div>
+    <span class="f-copy">© 2026 Juvian Studio. All rights reserved.</span>
+  </footer>
+
+  <script>
+    function openLB(src) {
+      document.getElementById('lb-img').src = src;
+      document.getElementById('lb').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLB() {
+      document.getElementById('lb').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeLB(); });
+  </script>
+</body>
+</html>
